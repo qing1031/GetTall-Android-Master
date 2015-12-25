@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import com.obenproto.howtall.R;
 
+/**
+ * IntroActivity
+ * <p/>
+ * Created by Petro Rington on 12/22/2015.
+ */
 public class IntroActivity extends Activity {
 
     @Override
@@ -17,7 +22,7 @@ public class IntroActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.intro_activity);
 
-        final TextView recort_voice = (TextView)findViewById(R.id.startRecordBtn);
+        final TextView recort_voice = (TextView) findViewById(R.id.startRecordBtn);
         recort_voice.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

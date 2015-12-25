@@ -10,6 +10,11 @@ import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 
+/**
+ * HowTallAPIService
+ * <p/>
+ * Created by Petro Rington on 12/22/2015.
+ */
 public interface HowTallAPIService {
 
     /**

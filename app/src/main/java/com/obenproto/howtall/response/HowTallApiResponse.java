@@ -5,5 +5,4 @@ public class HowTallApiResponse {
     public HowTallUser User;
 
     public HowTallRecord Record;
-
 }

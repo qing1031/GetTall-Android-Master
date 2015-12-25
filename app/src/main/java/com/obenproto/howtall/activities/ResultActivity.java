@@ -1,5 +1,6 @@
 package com.obenproto.howtall.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,11 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+/**
+ * ResultActivity
+ * <p/>
+ * Created by Petro Rington on 12/22/2015.
+ */
 public class ResultActivity extends Activity {
 
     SharedPreferences preferences;
@@ -86,7 +92,7 @@ public class ResultActivity extends Activity {
         Rect meter_rectangle = new Rect();
         meter_img.getWindowVisibleDisplayFrame(meter_rectangle);
 
-        float height_pos = (float) ((meter_rectangle.height()/19-6)*4 * (6.25 - height * 0.3937/12) - 10);
+        float height_pos = (float) ((meter_rectangle.height() / 19 - 6) * 4 * (6.25 - height * 0.3937 / 12) - 10);
 //        inch_img.setY((meter_rectangle.height()/19 - 6)*6 - 10);
         inch_img.setY(height_pos);
 
@@ -151,7 +157,7 @@ public class ResultActivity extends Activity {
                     editor.putString("ProfileHeight", height_txt.getText().toString());
                     editor.putString("ProfileAge", age_txt.getText().toString());
                     editor.putString("ProfileGender", gender_txt.getText().toString());
-                    editor.commit();
+                    editor.apply();
 
                     startActivity(new Intent(ResultActivity.this, ShareActivity.class));
                     finish();
@@ -162,10 +168,18 @@ public class ResultActivity extends Activity {
         });
     }
 
+    // Height check button event
     public void setHeightChk(boolean chk_flag) {
         if (chk_flag) {
             height_chk.setBackgroundResource(R.drawable.check_yes);
             height_txt.setText(preferences.getString("EstimatedHeight", "") + " cm");
+
+            int recordId = Integer.parseInt(preferences.getString("RecordID", ""));
+            int actualHeight = Integer.parseInt(height_txt.getText().toString().split(" ")[0]);
+
+            // save the uer actual height.
+            onUpdateActualHeight(recordId, actualHeight);
+            progressBar.setVisibility(View.VISIBLE);
 
         } else {
             height_chk.setBackgroundResource(R.drawable.check_no);
@@ -176,10 +190,18 @@ public class ResultActivity extends Activity {
         }
     }
 
+    // Age check button event
     public void setAgeChk(boolean chk_flag) {
         if (chk_flag) {
             age_chk.setBackgroundResource(R.drawable.check_yes);
             age_txt.setText(preferences.getString("EstimatedAge", ""));
+
+            int recordId = Integer.parseInt(preferences.getString("RecordID", ""));
+            int actualAge = Integer.parseInt(age_txt.getText().toString().split(" ")[0]);
+
+            // save the uer actual age.
+            onUpdateActualAge(recordId, actualAge);
+            progressBar.setVisibility(View.VISIBLE);
 
         } else {
             age_chk.setBackgroundResource(R.drawable.check_no);
@@ -190,10 +212,19 @@ public class ResultActivity extends Activity {
         }
     }
 
+    // Gender check button event
+    @SuppressLint("LongLogTag")
     public void setGenderChk(boolean chk_flag) {
-        if(chk_flag) {
+        if (chk_flag) {
             gender_chk.setBackgroundResource(R.drawable.check_yes);
             gender_txt.setText(preferences.getString("EstimatedGender", ""));
+
+            int recordId = Integer.parseInt(preferences.getString("RecordID", ""));
+            int actualGender = (gender_txt.getText().toString().equals("Male")) ? 1 : 0;
+
+            // save the user actual gender.
+            onUpdateActualGender(recordId, actualGender);
+            progressBar.setVisibility(View.VISIBLE);
 
         } else {
             gender_chk.setBackgroundResource(R.drawable.check_no);
@@ -212,6 +243,7 @@ public class ResultActivity extends Activity {
         }
     }
 
+    // Alert dialog for change the height and age.
     public void showAlertDlg(String questionStr, String valueHint, final int dlg_flag) {
 
         final String height_ary[] = new String[200];

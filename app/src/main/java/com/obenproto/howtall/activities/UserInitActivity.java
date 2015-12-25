@@ -29,6 +29,11 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+/**
+ * UserInitActivity
+ * <p>
+ * Created by Petro Rington on 12/22/2015.
+ */
 public class UserInitActivity extends Activity {
 
     public String phone_id;
@@ -37,8 +42,6 @@ public class UserInitActivity extends Activity {
     TextView startText;
     ProgressBar progressBar;
     public static Activity initActivity;
-    public static final String IMAGE_TYPE = "image/*";
-    public static final String MULTIPLE_TYPE = "*/*";
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
@@ -58,8 +61,6 @@ public class UserInitActivity extends Activity {
         onInitUser(phone_id);
 
         startText = (TextView) findViewById(R.id.startBtn);
-//        startText.setEnabled(false);
-//        startText.setAlpha(0.5f);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = preferences.edit();
@@ -115,7 +116,7 @@ public class UserInitActivity extends Activity {
 
                     // Save the user ID to shared preference.
                     editor.putInt("UserID", response_result.User.getUserId());
-                    editor.commit();
+                    editor.apply();
 
                     String confirm_str = preferences.getString("ConfirmStatus", "");
                     if (!confirm_str.equals("")) {

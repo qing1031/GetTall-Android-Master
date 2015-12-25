@@ -193,8 +193,8 @@
                 <ImageView
                     android:id="@+id/imageView11"
                     android:layout_width="35dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
                     android:background="@drawable/allow_img"
                     tools:ignore="RtlCompat" />
 
@@ -208,10 +208,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
                         android:gravity="bottom"
                         android:text="How'd we do?"
-                        android:layout_marginBottom="10dp"
                         android:textColor="@color/colorBlack"
                         android:textSize="13sp" />
 

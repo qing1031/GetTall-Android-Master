@@ -33,6 +33,11 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
+/**
+ * RecordActivity
+ * <p/>
+ * Created by Petro Rington on 12/22/2015.
+ */
 public class RecordActivity extends Activity {
 
     private static String filePath;
@@ -49,7 +54,7 @@ public class RecordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record_activity);
 
-        View background_layout= findViewById(R.id.record_activity);
+        View background_layout = findViewById(R.id.record_activity);
         background = background_layout.getBackground();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -104,7 +109,6 @@ public class RecordActivity extends Activity {
             }
         });
 
-        progressBar.setVisibility(View.GONE);
         background.setAlpha(255);
         example_txt.setAlpha(1.0f);
         recording_status.setAlpha(1.0f);
@@ -114,39 +118,31 @@ public class RecordActivity extends Activity {
     public void startRecording() {
         Log.d("Recorder", "Start recording");
 
-//				extAudioRecorder = ExtAudioRecorder.getInstanse(true);    // Compressed recording (AMR)
-        extAudioRecorder = ExtAudioRecorder.getInstanse(false); // Uncompressed recording (WAV)
+        extAudioRecorder = ExtAudioRecorder.getInstanse(false); // Uncompressed recording (WAV) : IF true - AMR
 
-//        extAudioRecorder.setOutputFile(filePath);
-//        extAudioRecorder.prepare();
-//        extAudioRecorder.start();
+        extAudioRecorder.setOutputFile(filePath);
+        extAudioRecorder.prepare();
+        extAudioRecorder.start();
     }
 
     public void stopRecording() {
         Log.d("Recorder", "Stop recording");
 
         progressBar.setVisibility(View.VISIBLE);
+        recordBtn.setEnabled(false);
         recording_status.setText("Processing ...");
         background.setAlpha(40);
         example_txt.setAlpha(0.4f);
         recording_status.setAlpha(0.4f);
 
-//        extAudioRecorder.stop();
-//        extAudioRecorder.release();
+        extAudioRecorder.stop();
+        extAudioRecorder.release();
 
         // Upload the recorded voice.
         int userId = preferences.getInt("UserID", 0);
         RequestBody audioBody = RequestBody.create(MediaType.parse("image/png"), new File(filePath));
 
-//        onUploadVoice(userId, audioBody);
-        editor.putString("EstimatedHeight", String.valueOf(71));
-        editor.putString("EstimatedAge", "32");
-        editor.putString("EstimatedGender", "Male");
-        editor.putString("RecordID", "823");
-        editor.commit();
-
-        startActivity(new Intent(RecordActivity.this, ResultActivity.class));
-        finish();
+        onUploadVoice(userId, audioBody);
     }
 
     // Upload and Save the recorded voice.
@@ -159,6 +155,7 @@ public class RecordActivity extends Activity {
             @Override
             public void onResponse(Response<HowTallApiResponse> response, Retrofit retrofit) {
                 progressBar.setVisibility(View.GONE);
+                recordBtn.setEnabled(true);
                 background.setAlpha(250);
                 example_txt.setAlpha(1.0f);
                 recording_status.setAlpha(1.0f);
@@ -206,6 +203,7 @@ public class RecordActivity extends Activity {
             public void onFailure(Throwable t) {
                 Log.d("Upload", t.getMessage());
                 progressBar.setVisibility(View.GONE);
+                recordBtn.setEnabled(true);
                 background.setAlpha(255);
                 example_txt.setAlpha(1.0f);
                 recording_status.setAlpha(1.0f);
@@ -216,5 +214,4 @@ public class RecordActivity extends Activity {
             }
         });
     }
-
 }

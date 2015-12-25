@@ -1,6 +1,7 @@
 package com.obenproto.howtall.response;
 
 public class HowTallUser {
+
     private String message;
     private String phoneId;
     private int userId;

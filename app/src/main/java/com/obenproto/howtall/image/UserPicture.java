@@ -27,7 +27,6 @@ import java.util.Arrays;
  * implementation by user @hdante
  * http://stackoverflow.com/users/1797000/hdante
  */
-
 public class UserPicture {
 
     static int MAX_WIDTH = 600;
